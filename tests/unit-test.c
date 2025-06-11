@@ -165,6 +165,15 @@ int test_shrink_with_replace() {
 	return 0;
 }
 
+int test_str_has() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	if (str_append(str, "Hello, World!") == NULL) return 2;
+	if (str_has(str, "Hello") != true) return 3;
+	if (str_has(str, "Yellow") != false) return 4;
+	return 0;
+}
+
 int main(void) {
 	ASSERT(test_new() == 0);
 	ASSERT(test_append() == 0);
@@ -178,6 +187,7 @@ int main(void) {
 	ASSERT(test_replace() == 0);
 	ASSERT(test_expand_with_replace() == 0);
 	ASSERT(test_shrink_with_replace() == 0);
+	ASSERT(test_str_has() == 0);
 
 	print_results();
 	return 0;

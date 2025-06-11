@@ -209,3 +209,23 @@ const char *str_replace(str_t *str, const char *old_str, const char *new_str) {
 	free(result);
 	return str->data;
 }
+
+// str_has
+bool str_has(const str_t *str, const char *src) {
+	if (!str || !src) {
+#ifndef NDEBUG
+		fprintf(stderr, "NULL ptr passed to str_has().\n");
+#endif
+#ifndef TESTING
+		exit(1);
+#endif
+		_is_exit_called = true;
+	} else {
+		if (strstr(str->data, src)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	return false;
+}

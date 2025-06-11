@@ -58,4 +58,8 @@ bool str_cmp(const str_t *str, const char *src);
  * Returns a pointer to the data or NULL on failure. */
 const char *str_replace(str_t *str, const char *old_str, const char *new_str);
 
+/* Returns 'true' if 'str' has 'src' in it, otherwise returns 'false'.
+ * Exits the program with status code '1' if 'str' is NULL */
+bool str_has(const str_t *str, const char *src);
+
 #endif
