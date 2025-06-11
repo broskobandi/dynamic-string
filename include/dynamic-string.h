@@ -16,8 +16,7 @@ typedef struct str str_t;
 /* Required for testing */
 extern bool _is_exit_called;
 
-/* Creates a new instance of str_t.
- * Exits program with status code '1' on failure. */
+/* Returns a new instance of str_t or NULL on failure. */
 str_t *str_create();
 
 /* Required for testing */
@@ -25,5 +24,9 @@ extern bool _is_str_destroyed;
 
 /* Frees all memory allocated in 'str' */
 void str_destroy(str_t **str);
+
+/* Appends 'src' at the end of 'str'.
+ * Returns a pointer to the data or NULL on failure. */
+const char *str_append(str_t *str, const char *src);
 
 #endif

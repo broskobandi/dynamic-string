@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <stdio.h>
+#include <string.h>
 
 struct str {
 	char *data;
@@ -11,23 +12,13 @@ struct str {
 
 // Constructor
 #define DEFAULT_CAPACITY 16
-bool _is_exit_called = false;
 str_t *str_create() {
 	str_t *str = calloc(1, sizeof(str_t));
-	if (!str) goto exit;
+	if (!str) return NULL;
 	str->data = calloc(1, sizeof(char));
-	if (!str->data) goto exit;
+	if (!str->data) return NULL;
 	str->capacity = DEFAULT_CAPACITY;
 	str->len = 0;
-exit:
-#ifndef NDEBUG
-		fprintf(stderr, "calloc() failed in create_str().\n");
-#endif
-#ifndef TESTING
-		exit(1);
-#else
-		_is_exit_called = true;
-#endif
 	return str;
 }
 
@@ -42,3 +33,32 @@ void str_destroy(str_t **str) {
 		_is_str_destroyed = true;
 	}
 }
+
+// str_append
+const char *str_append(str_t *str, const char *src) {
+	if (!str) return NULL;
+
+	ulong old_capacity = str->capacity;
+	ulong old_len = str->len;
+	ulong new_len = old_len + strlen(src);
+	ulong new_capacity = old_capacity;
+
+	while (new_len + 1 > new_capacity) {
+		new_capacity *= 2;
+	}
+
+	if (new_capacity != old_capacity) {
+		char *tmp = realloc(str->data, new_capacity * sizeof(char));
+		if (!tmp) return NULL;
+		str->data = tmp;
+	}
+
+	strcpy(&str->data[old_len], src);
+
+	str->capacity = new_capacity;
+	str->len = new_len;
+
+	return str->data;
+}
+
+

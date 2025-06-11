@@ -1,6 +1,7 @@
 #include "dynamic-string.h"
 #include <stdio.h>
 #include <sys/types.h>
+#include <string.h>
 
 uint completed = 0;
 uint failed = 0;
@@ -27,29 +28,31 @@ void print_results() {
 	}
 }
 
-int main(void) {
-	// test create_str()
-	{
-		_is_exit_called = false;
-		str_t *str = str_create();
-		ASSERT(_is_exit_called == true);
-		ASSERT(str != NULL);
-	}
-
-	// test str_destroy()
-	{
-		str_t *str = str_create();
-		_is_str_destroyed = false;
-		str_destroy(&str);
-		ASSERT(_is_str_destroyed == true);
-	}
-
-	// test str_auto
+int test_new() {
 	{
 		str_auto str = str_create();
+		if (str == NULL) return 1;
 		_is_str_destroyed = false;
 	}
-	ASSERT(_is_str_destroyed == true);
+	if (_is_str_destroyed != true) return 2;
+	return 0;
+}
+
+int test_append() {
+	str_auto str = str_create();
+	const char *expected_content = "Hello, World!";
+	if (strcmp(str_append(str, expected_content), expected_content) != 0)
+		return 1;
+	const char *new_content = " This is a kickass library.";
+	expected_content = "Hello, World! This is a kickass library.";
+	if (strcmp(str_append(str, new_content), expected_content) != 0)
+		return 2;
+	return 0;
+}
+
+int main(void) {
+	ASSERT(test_new() == 0);
+	ASSERT(test_append() == 0);
 
 	print_results();
 	return 0;
