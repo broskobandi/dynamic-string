@@ -129,6 +129,47 @@ int str_push(str_t *str, char c) {
 	return 0;
 }
 
+// str_pop
+char str_pop(str_t *str) {
+	if (!str || !str->len) {
+exit:
+#ifndef NDEBUG
+		fprintf(stderr, "NULL ptr passed to str_capacity(), or string length is is zero.\n");
+#endif
+#ifndef TESTING
+		exit(1);
+#endif
+		_is_exit_called = true;
+	} else {
+		ulong old_len = str->len;
+		ulong old_capacity = str->capacity;
+		ulong new_len = old_len - 1;
+		ulong new_capacity = old_capacity;
+
+		while (new_len + 1 < new_capacity / 2 && new_capacity / 2 >= DEFAULT_CAPACITY) {
+			new_capacity /= 2;
+		}
+
+		char c = str->data[old_len - 1];
+
+		memset(&str->data[old_len - 1], 0, sizeof(char));
+
+		if (new_capacity != old_capacity) {
+			char *tmp = realloc(str->data, new_capacity);
+			if (!tmp) goto exit;
+			str->data = tmp;
+		}
+
+		str->data[new_len] = '\0';
+
+		str->capacity = new_capacity;
+		str->len = new_len;
+
+		return c;
+	}
+	return '\0';
+}
+
 // str_cmp
 bool str_cmp(const str_t *str, const char *src) {
 	if (!str || !src) {

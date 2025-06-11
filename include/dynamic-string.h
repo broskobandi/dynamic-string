@@ -50,6 +50,10 @@ ulong str_capacity(const str_t *str);
  * Returns '0' on success and '1' on failure. */
 int str_push(str_t *str, char c);
 
+/* Removes and returns the last character of 'str'.
+ * Exits the program with status code '1' if 'str' is NULL. */
+char str_pop(str_t *str);
+
 /* Returns 'true' if 'str' and 'src' are the same, otherwise returns 'false'.
  * Exits the program with status code '1' if 'str' is NULL */
 bool str_cmp(const str_t *str, const char *src);

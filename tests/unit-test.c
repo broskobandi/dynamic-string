@@ -120,6 +120,38 @@ int test_expand_with_push() {
 	return 0;
 }
 
+int test_pop() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	if (str_push(str, 'c')) return 2;
+	if (str_pop(str) != 'c') return 3;
+	return 0;
+}
+
+int test_pop_overflow() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	_is_exit_called = false;
+	str_pop(str);
+	if (_is_exit_called != true) return 2;
+	return 0;
+}
+
+int test_shrink_with_pop() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	if (str_append(str, "aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa") == NULL) return 2;
+	ulong len = str_len(str);
+	ulong expected_capacity = str_capacity(str);
+	for (ulong i = 0; i < len; i++) {
+		__attribute__((unused)) char c = str_pop(str);
+		if (str_len(str) + 1 < expected_capacity / 2 && expected_capacity / 2 >= 16)
+			expected_capacity /= 2;
+		if (str_capacity(str) != expected_capacity) return 1;
+	}
+	return 0;
+}
+
 int test_str_cmp() {
 	str_auto str = str_create();
 	if (!str) return 1;
@@ -188,6 +220,9 @@ int main(void) {
 	ASSERT(test_expand_with_replace() == 0);
 	ASSERT(test_shrink_with_replace() == 0);
 	ASSERT(test_str_has() == 0);
+	ASSERT(test_pop() == 0);
+	ASSERT(test_pop_overflow() == 0);
+	ASSERT(test_shrink_with_pop() == 0);
 
 	print_results();
 	return 0;

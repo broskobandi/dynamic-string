@@ -2,7 +2,6 @@
 PROJECT := dynamic-string
 CC := bear -- clang
 CFLAGS := -Wall -Wextra -Werror -Wconversion -Wunused-result
-# CPPFLAGS = -Iinclude
 CPPFLAGS := -Iinclude
 
 # Dirs
