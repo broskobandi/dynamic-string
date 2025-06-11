@@ -1,4 +1,4 @@
-#include <dynamic-string.h>
+#include <c-tools/dynamic-string.h>
 #include <stdio.h>
 
 int main(void) {

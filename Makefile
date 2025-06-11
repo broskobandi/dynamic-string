@@ -1,4 +1,5 @@
 # Project details
+PROJECT_GROUP := c-tools
 PROJECT := dynamic-string
 CC := bear -- clang
 CFLAGS := -Wall -Wextra -Werror -Wconversion -Wunused-result
@@ -14,8 +15,8 @@ TEST_EXE_DIR := $(BUILD_DIR)/tests
 OBJ_DIR := $(BUILD_DIR)/objs
 SYS_PREFIX := /usr/local
 SYS_LIB_DIR := $(SYS_PREFIX)/lib
-SYS_DOC_DIR := $(SYS_PREFIX)/share/doc/$(PROJECT)
-SYS_INC_DIR := $(SYS_PREFIX)/include
+SYS_DOC_DIR := $(SYS_PREFIX)/share/doc/$(PROJECT_GROUP)/$(PROJECT)
+SYS_INC_DIR := $(SYS_PREFIX)/include/$(PROJECT_GROUP)
 
 # Src files
 SRC := $(wildcard $(SRC_DIR)/*.c)
@@ -25,7 +26,7 @@ INC := $(INC_DIR)/$(PROJECT).h
 # Targets
 OBJ := $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 TEST := $(TEST_SRC:$(TEST_SRC_DIR)/%.c=$(TEST_EXE_DIR)/%)
-LIB := $(BUILD_DIR)/lib$(PROJECT).a
+LIB := $(BUILD_DIR)/lib$(PROJECT_GROUP)_$(PROJECT).a
 
 # Command to execute all tests
 RUN_TEST := $(TEST_SRC:$(TEST_SRC_DIR)/%.c=./$(TEST_EXE_DIR)/%)
