@@ -50,9 +50,20 @@ int test_append() {
 	return 0;
 }
 
+int test_data() {
+	str_auto str = str_create();
+	const char *expected_content = "Hello, World! This is a kickass library.";
+	str_append(str, expected_content);
+	if (strcmp(str_data(str), expected_content) != 0)
+		return 1;
+	return 0;
+	
+}
+
 int main(void) {
 	ASSERT(test_new() == 0);
 	ASSERT(test_append() == 0);
+	ASSERT(test_data() == 0);
 
 	print_results();
 	return 0;

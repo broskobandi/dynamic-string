@@ -85,11 +85,11 @@
       "-x",
       "c",
       "-o",
-      "/tmp/unit-test-e2aea6.o",
+      "/tmp/unit-test-a7fb49.o",
       "tests/unit-test.c"
     ],
     "directory": "/home/bandigame/dynamic-string",
     "file": "/home/bandigame/dynamic-string/tests/unit-test.c",
-    "output": "/tmp/unit-test-e2aea6.o"
+    "output": "/tmp/unit-test-a7fb49.o"
   }
 ]

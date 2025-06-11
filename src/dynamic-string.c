@@ -61,4 +61,8 @@ const char *str_append(str_t *str, const char *src) {
 	return str->data;
 }
 
-
+// str_data
+const char *str_data(const str_t *str) {
+	if (!str) return NULL;
+	return str->data;
+}

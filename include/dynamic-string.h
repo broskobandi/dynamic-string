@@ -29,4 +29,9 @@ void str_destroy(str_t **str);
  * Returns a pointer to the data or NULL on failure. */
 const char *str_append(str_t *str, const char *src);
 
+/* Returns a pointer to the data stored in 'str' or NULL on failure.
+ * This is a reference and not a copy, changes made to 
+ * 'str' will be reflected through this. */
+const char *str_data(const str_t *str);
+
 #endif
