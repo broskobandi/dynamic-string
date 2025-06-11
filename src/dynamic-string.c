@@ -10,6 +10,8 @@ struct str {
 	ulong len;
 };
 
+bool _is_exit_called = false;
+
 // Constructor
 #define DEFAULT_CAPACITY 16
 str_t *str_create() {
@@ -66,3 +68,44 @@ const char *str_data(const str_t *str) {
 	if (!str) return NULL;
 	return str->data;
 }
+
+// str_len
+ulong str_len(const str_t *str) {
+	if (!str) {
+#ifndef NDEBUG
+		fprintf(stderr, "NULL ptr passed to str_len().\n");
+#endif
+#ifndef TESTING
+		exit(1);
+#endif
+		_is_exit_called = true;
+	} else {
+		return str->len;
+	}
+	return (ulong)-1;
+}
+
+// str_capacity
+ulong str_capacity(const str_t *str) {
+	if (!str) {
+#ifndef NDEBUG
+		fprintf(stderr, "NULL ptr passed to str_capacity().\n");
+#endif
+#ifndef TESTING
+		exit(1);
+#endif
+		_is_exit_called = true;
+	} else {
+		return str->capacity;
+	}
+	return (ulong)-1;
+}
+
+// // str_push
+// int str_push(str_t *str, char c) {
+// 	if (!str) return 1;
+//
+// 	ulong old_capacity = 
+//
+// 	return 0;
+// }

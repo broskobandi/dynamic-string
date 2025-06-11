@@ -2,6 +2,7 @@
 #define DYNAMIC_STRING_H
 
 #include <stdbool.h>
+#include <sys/types.h>
 
 #define str_auto\
 	\
@@ -9,6 +10,9 @@
 	 * Gcc or clang required! */\
 	\
 	__attribute__((cleanup(str_destroy))) str_t*
+
+/* This is required for testing. */
+extern bool _is_exit_called;
 
 /* String object opaque struct */
 typedef struct str str_t;
@@ -33,5 +37,17 @@ const char *str_append(str_t *str, const char *src);
  * This is a reference and not a copy, changes made to 
  * 'str' will be reflected through this. */
 const char *str_data(const str_t *str);
+
+/* Returns the length of 'str'.
+ * Exits the program with status code '1' if 'str' is NULL. */
+ulong str_len(const str_t *str);
+
+/* Returns the capacity of 'str'.
+ * Exits the program with status code '1' if 'str' is NULL. */
+ulong str_capacity(const str_t *str);
+
+// /* Appends 'c' at the end of 'str'.
+//  * Returns '0' on success and '1' on failure. */
+// int str_push(str_t *str, char c);
 
 #endif
