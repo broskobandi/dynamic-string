@@ -40,6 +40,7 @@ int test_new() {
 
 int test_append() {
 	str_auto str = str_create();
+	if (!str) return 1;
 	const char *expected_content = "Hello, World!";
 	if (strcmp(str_append(str, expected_content), expected_content) != 0)
 		return 1;
@@ -52,6 +53,7 @@ int test_append() {
 
 int test_data() {
 	str_auto str = str_create();
+	if (!str) return 1;
 	const char *expected_content = "Hello, World! This is a kickass library.";
 	if (str_append(str, expected_content) == NULL) return 1;
 	if (strcmp(str_data(str), expected_content) != 0)
@@ -62,6 +64,7 @@ int test_data() {
 
 int test_len() {
 	str_auto str = str_create();
+	if (!str) return 1;
 	if (str_len(str) != 0) return 1;
 	const char *new_text = "Hello, World!";
 	if (str_append(str, new_text) == NULL) return 2;
@@ -75,12 +78,18 @@ int test_len() {
 
 int test_capacity() {
 	str_auto str = str_create();
+	if (!str) return 1;
 	if (str_capacity(str) != 16) return 1;
+	str_t *str_null = NULL;
+	_is_exit_called = false;
+	str_capacity(str_null);
+	if (_is_exit_called == false) return 4;
 	return 0;
 }
 
 int test_expand_with_append() {
 	str_auto str = str_create();
+	if (!str) return 1;
 	ulong expected_capacity = str_capacity(str);
 	while (str_capacity(str) < 10000000) {
 		str_append(str, "c");
@@ -90,7 +99,71 @@ int test_expand_with_append() {
 	return 0;
 }
 
+int test_push() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	if (str_append(str, "Hello, World") == NULL) return 1;
+	if (str_push(str, '!') == 1) return 2;
+	if (strcmp(str_data(str), "Hello, World!") != 0) return 3;
+	return 0;
+}
 
+int test_expand_with_push() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	ulong expected_capacity = str_capacity(str);
+	while (str_capacity(str) < 10000000) {
+		str_push(str, 'c');
+		if (str_len(str) + 1 > expected_capacity) expected_capacity *= 2;
+		if (str_capacity(str) != expected_capacity) return 1;
+	}
+	return 0;
+}
+
+int test_str_cmp() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	if (str_append(str, "Hello, World!") == NULL) return 1;
+	if (str_cmp(str, "Hello, World!") != true) return 2;
+	if (str_cmp(str, "carrot") != false) return 3;
+	str_t *str_null = NULL;
+	_is_exit_called = false;
+	str_cmp(str_null, "anything");
+	if (_is_exit_called != true) return 4;
+	return 0;
+}
+
+int test_replace() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	if (str_append(str, "Hello, World!") == NULL) return 1;
+	if (strcmp(str_replace(str, "Hello", "Yo"), "Yo, World!") != 0) return 2;
+	for (int i = 0; i < 10; i++) {
+		if (str_append(str, "Hello") == NULL) return 3;
+	}
+	const char *expected = "Yo, World!yoyoyoyoyoyoyoyoyoyo";
+	if (strcmp(str_replace(str, "Hello", "yo"), expected) != 0) return 4;
+	return 0;
+}
+
+int test_expand_with_replace() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	if (str_append(str, "a a a a a a a a a a") == NULL) return 2;
+	const char *expected = "aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa";
+	if (strcmp(str_replace(str, "a", "aaaaaaaaaaaaaaaaaaaa"), expected) != 0) return 3;
+	return 0;
+}
+
+int test_shrink_with_replace() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	if (str_append(str, "aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa") == NULL) return 2;
+	const char *expected = "a a a a a a a a a a";
+	if (strcmp(str_replace(str, "aaaaaaaaaaaaaaaaaaaa", "a"), expected) != 0) return 3;
+	if (str_capacity(str) != 32) return 4;
+	return 0;
+}
 
 int main(void) {
 	ASSERT(test_new() == 0);
@@ -99,6 +172,12 @@ int main(void) {
 	ASSERT(test_len() == 0);
 	ASSERT(test_capacity() == 0);
 	ASSERT(test_expand_with_append() == 0);
+	ASSERT(test_push() == 0);
+	ASSERT(test_expand_with_push() == 0);
+	ASSERT(test_str_cmp() == 0);
+	ASSERT(test_replace() == 0);
+	ASSERT(test_expand_with_replace() == 0);
+	ASSERT(test_shrink_with_replace() == 0);
 
 	print_results();
 	return 0;

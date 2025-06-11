@@ -46,8 +46,16 @@ ulong str_len(const str_t *str);
  * Exits the program with status code '1' if 'str' is NULL. */
 ulong str_capacity(const str_t *str);
 
-// /* Appends 'c' at the end of 'str'.
-//  * Returns '0' on success and '1' on failure. */
-// int str_push(str_t *str, char c);
+/* Appends 'c' at the end of 'str'.
+ * Returns '0' on success and '1' on failure. */
+int str_push(str_t *str, char c);
+
+/* Returns 'true' if 'str' and 'src' are the same, otherwise returns 'false'.
+ * Exits the program with status code '1' if 'str' is NULL */
+bool str_cmp(const str_t *str, const char *src);
+
+/* Replaces all occurrences of 'old_str' to 'new_str' in 'str'.
+ * Returns a pointer to the data or NULL on failure. */
+const char *str_replace(str_t *str, const char *old_str, const char *new_str);
 
 #endif

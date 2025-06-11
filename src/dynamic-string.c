@@ -38,7 +38,7 @@ void str_destroy(str_t **str) {
 
 // str_append
 const char *str_append(str_t *str, const char *src) {
-	if (!str) return NULL;
+	if (!str || !src) return NULL;
 
 	ulong old_capacity = str->capacity;
 	ulong old_len = str->len;
@@ -50,12 +50,12 @@ const char *str_append(str_t *str, const char *src) {
 	}
 
 	if (new_capacity != old_capacity) {
-		char *tmp = realloc(str->data, new_capacity * sizeof(char));
+		char *tmp = realloc(str->data, new_capacity);
 		if (!tmp) return NULL;
 		str->data = tmp;
 	}
 
-	strcpy(&str->data[old_len], src);
+	if (!strcpy(&str->data[old_len], src)) return NULL;
 
 	str->capacity = new_capacity;
 	str->len = new_len;
@@ -101,11 +101,111 @@ ulong str_capacity(const str_t *str) {
 	return (ulong)-1;
 }
 
-// // str_push
-// int str_push(str_t *str, char c) {
-// 	if (!str) return 1;
-//
-// 	ulong old_capacity = 
-//
-// 	return 0;
-// }
+// str_push
+int str_push(str_t *str, char c) {
+	if (!str) return 1;
+
+	ulong old_capacity = str->capacity;
+	ulong old_len = str->len;
+	ulong new_capacity = old_capacity;
+	ulong new_len = old_len + 1;
+
+	while (new_len + 1 > new_capacity) {
+		new_capacity *= 2;
+	}
+
+	if (new_capacity != old_capacity) {
+		char *tmp = realloc(str->data, new_capacity);
+		if (!tmp) return 1;
+		str->data = tmp;
+	}
+
+	str->data[old_len] = c;
+	str->data[new_len] = '\0';
+
+	str->capacity = new_capacity;
+	str->len = new_len;
+
+	return 0;
+}
+
+// str_cmp
+bool str_cmp(const str_t *str, const char *src) {
+	if (!str || !src) {
+#ifndef NDEBUG
+		fprintf(stderr, "NULL ptr passed to str_capacity().\n");
+#endif
+#ifndef TESTING
+		exit(1);
+#endif
+		_is_exit_called = true;
+	} else {
+		if (strcmp(str_data(str), src) == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	return false;
+}
+
+// str_replace
+const char *str_replace(str_t *str, const char *old_str, const char *new_str) {
+	if (!str || !old_str || !new_str || !strlen(old_str)) return NULL;
+
+	ulong old_capacity = str->capacity;
+	ulong old_len = str->len;
+	ulong new_capacity = old_capacity;
+	ulong num_old_str = 0;
+	for (ulong i = 0; i < old_len; i++) {
+		if (strstr(&str->data[i], old_str) == &str->data[i]) {
+			num_old_str++;
+			i += strlen(old_str) - 1;
+		}
+	}
+	ulong new_len =
+		old_len - (num_old_str * strlen(old_str)) + (num_old_str * strlen(new_str));
+
+	char *result = malloc(new_len + 1);
+	ulong data_i = 0;
+	ulong result_i = 0;
+
+	while (data_i < old_len) {
+		if (strstr(&str->data[data_i], old_str) == &str->data[data_i]) {
+			for (ulong i = 0; i < strlen(new_str); i++) {
+				result[result_i] = new_str[i];
+				result_i++;
+			}
+			data_i += strlen(old_str);
+		} else {
+			result[result_i] = str->data[data_i];
+			result_i++;
+			data_i++;
+		}
+	}
+	if (new_len != result_i) return NULL;
+	result[new_len] = '\0';
+
+	if (new_len > old_len) {
+		while (new_len + 1 > new_capacity) {
+			new_capacity *= 2;
+		}
+	} else if (new_len < old_len) {
+		while (new_len + 1 < new_capacity / 2 && new_capacity / 2 >= DEFAULT_CAPACITY) {
+			new_capacity /= 2;
+		}
+	}
+
+	if (new_capacity != old_capacity) {
+		char *tmp = realloc(str->data, new_capacity);
+		if (!tmp) return NULL;
+		str->data = tmp;
+	}
+
+	if (strcpy(str->data, result) == NULL) return NULL;
+
+	str->len = new_len;
+	str->capacity = new_capacity;
+	free(result);
+	return str->data;
+}
