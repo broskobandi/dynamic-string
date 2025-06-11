@@ -61,7 +61,7 @@ $(OBJ_DIR): | $(BUILD_DIR)
 	mkdir -p $@
 
 clean:
-	rm -rf $(BUILD_DIR) compile_commands.json
+	rm -rf $(BUILD_DIR) compile_commands.json .cache
 
 install:
 	install -d $(SYS_INC_DIR)
