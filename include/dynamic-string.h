@@ -18,7 +18,7 @@ extern bool _is_exit_called;
 
 /* Creates a new instance of str_t.
  * Exits program with status code '1' on failure. */
-str_t *create_str();
+str_t *str_create();
 
 /* Required for testing */
 extern bool _is_str_destroyed;

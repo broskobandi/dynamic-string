@@ -31,14 +31,14 @@ int main(void) {
 	// test create_str()
 	{
 		_is_exit_called = false;
-		str_t *str = create_str();
+		str_t *str = str_create();
 		ASSERT(_is_exit_called == true);
 		ASSERT(str != NULL);
 	}
 
 	// test str_destroy()
 	{
-		str_t *str = create_str();
+		str_t *str = str_create();
 		_is_str_destroyed = false;
 		str_destroy(&str);
 		ASSERT(_is_str_destroyed == true);
@@ -46,7 +46,7 @@ int main(void) {
 
 	// test str_auto
 	{
-		str_auto str = create_str();
+		str_auto str = str_create();
 		_is_str_destroyed = false;
 	}
 	ASSERT(_is_str_destroyed == true);

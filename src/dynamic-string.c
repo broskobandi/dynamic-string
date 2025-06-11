@@ -12,7 +12,7 @@ struct str {
 // Constructor
 #define DEFAULT_CAPACITY 16
 bool _is_exit_called = false;
-str_t *create_str() {
+str_t *str_create() {
 	str_t *str = calloc(1, sizeof(str_t));
 	if (!str) goto exit;
 	str->data = calloc(1, sizeof(char));
