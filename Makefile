@@ -1,7 +1,7 @@
 # Project details
 PROJECT_GROUP := c-tools
 PROJECT := dynamic-string
-CC := bear -- clang
+CC := $(shell command -v clang || command -v gcc)
 CFLAGS := -Wall -Wextra -Werror -Wconversion -Wunused-result
 CPPFLAGS := -Iinclude
 
@@ -40,6 +40,7 @@ $(LIB): $(OBJ) | $(BUILD_DIR)
 	ar rcs $@ $^
 
 test: CPPFLAGS += -DNDEBUG -DTESTING
+test: CC := bear -- $(CC)
 test: $(TEST)
 	@echo ""
 	$(RUN_TEST)
