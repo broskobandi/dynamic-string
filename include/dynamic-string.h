@@ -51,11 +51,11 @@ ulong str_capacity(const str_t *str);
 int str_push(str_t *str, char c);
 
 /* Removes and returns the last character of 'str'.
- * Exits the program with status code '1' if 'str' is NULL. */
+ * Exits the program with status code '1' on failure. */
 char str_pop(str_t *str);
 
 /* Returns 'true' if 'str' and 'src' are the same, otherwise returns 'false'.
- * Exits the program with status code '1' if 'str' is NULL */
+ * Exits the program with status code '1' if 'str' or 'src' is NULL */
 bool str_cmp(const str_t *str, const char *src);
 
 /* Replaces all occurrences of 'old_str' to 'new_str' in 'str'.
@@ -63,7 +63,7 @@ bool str_cmp(const str_t *str, const char *src);
 const char *str_replace(str_t *str, const char *old_str, const char *new_str);
 
 /* Returns 'true' if 'str' has 'src' in it, otherwise returns 'false'.
- * Exits the program with status code '1' if 'str' is NULL */
+ * Exits the program with status code '1' if 'str' or 'src' is NULL */
 bool str_has(const str_t *str, const char *src);
 
 #endif
