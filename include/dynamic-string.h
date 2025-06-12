@@ -38,14 +38,11 @@ SOFTWARE.
 	\
 	__attribute__((cleanup(str_destroy))) str_t*
 
-/* This is required for testing. */
-extern bool _is_exit_called;
-
 /* String object opaque struct */
 typedef struct str str_t;
 
 /* Required for testing */
-extern bool _is_exit_called;
+extern bool _is_str_exit_called;
 
 /* Returns a new instance of str_t or NULL on failure. */
 str_t *str_create();

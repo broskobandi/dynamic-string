@@ -36,7 +36,7 @@ struct str {
 	ulong len;
 };
 
-bool _is_exit_called = false;
+bool _is_str_exit_called = false;
 
 // Constructor
 #define DEFAULT_CAPACITY 16
@@ -135,7 +135,7 @@ ulong str_len(const str_t *str) {
 #ifndef TESTING
 		exit(1);
 #endif
-		_is_exit_called = true;
+		_is_str_exit_called = true;
 	} else {
 		return str->len;
 	}
@@ -151,7 +151,7 @@ ulong str_capacity(const str_t *str) {
 #ifndef TESTING
 		exit(1);
 #endif
-		_is_exit_called = true;
+		_is_str_exit_called = true;
 	} else {
 		return str->capacity;
 	}
@@ -224,7 +224,7 @@ exit:
 #ifndef TESTING
 		exit(1);
 #endif
-		_is_exit_called = true;
+		_is_str_exit_called = true;
 	} else {
 		ulong old_len = str->len;
 		ulong old_capacity = str->capacity;
@@ -264,7 +264,7 @@ bool str_cmp(const str_t *str, const char *src) {
 #ifndef TESTING
 		exit(1);
 #endif
-		_is_exit_called = true;
+		_is_str_exit_called = true;
 	} else {
 		if (strcmp(str_data(str), src) == 0) {
 			return true;
@@ -345,7 +345,7 @@ bool str_has(const str_t *str, const char *src) {
 #ifndef TESTING
 		exit(1);
 #endif
-		_is_exit_called = true;
+		_is_str_exit_called = true;
 	} else {
 		if (strstr(str->data, src)) {
 			return true;

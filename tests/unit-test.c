@@ -82,9 +82,9 @@ int test_len() {
 	if (str_append(str, new_text) == NULL) return 2;
 	if (str_len(str) != strlen(new_text)) return 3;
 	str_t *str_null = NULL;
-	_is_exit_called = false;
+	_is_str_exit_called = false;
 	str_len(str_null);
-	if (_is_exit_called == false) return 4;
+	if (_is_str_exit_called == false) return 4;
 	return 0;
 }
 
@@ -93,9 +93,9 @@ int test_capacity() {
 	if (!str) return 1;
 	if (str_capacity(str) != 16) return 1;
 	str_t *str_null = NULL;
-	_is_exit_called = false;
+	_is_str_exit_called = false;
 	str_capacity(str_null);
-	if (_is_exit_called == false) return 4;
+	if (_is_str_exit_called == false) return 4;
 	return 0;
 }
 
@@ -164,9 +164,9 @@ int test_pop() {
 int test_pop_overflow() {
 	str_auto str = str_create();
 	if (!str) return 1;
-	_is_exit_called = false;
+	_is_str_exit_called = false;
 	str_pop(str);
-	if (_is_exit_called != true) return 2;
+	if (_is_str_exit_called != true) return 2;
 	return 0;
 }
 
@@ -192,9 +192,9 @@ int test_str_cmp() {
 	if (str_cmp(str, "Hello, World!") != true) return 2;
 	if (str_cmp(str, "carrot") != false) return 3;
 	str_t *str_null = NULL;
-	_is_exit_called = false;
+	_is_str_exit_called = false;
 	str_cmp(str_null, "anything");
-	if (_is_exit_called != true) return 4;
+	if (_is_str_exit_called != true) return 4;
 	return 0;
 }
 
