@@ -89,6 +89,37 @@ const char *str_append(str_t *str, const char *src) {
 	return str->data;
 }
 
+// str_prepend
+const char *str_prepend(str_t *str, const char *src) {
+	if (!str || !src) return NULL;
+
+	ulong old_capacity = str->capacity;
+	ulong old_len = str->len;
+	ulong new_len = old_len + strlen(src);
+	ulong new_capacity = old_capacity;
+
+	while (new_len + 1 > new_capacity) {
+		new_capacity *= 2;
+	}
+
+	if (new_capacity != old_capacity) {
+		char *tmp = realloc(str->data, new_capacity);
+		if (!tmp) return NULL;
+		str->data = tmp;
+	}
+
+	for (ulong i = new_len; i > 0; i -= strlen(src)) {
+		strcpy(&str->data[i - strlen(src)], &str->data[i]);
+	}
+
+	if (!strcpy(&str->data[old_len], src)) return NULL;
+
+	str->capacity = new_capacity;
+	str->len = new_len;
+
+	return str->data;
+}
+
 // str_data
 const char *str_data(const str_t *str) {
 	if (!str) return NULL;
@@ -127,8 +158,8 @@ ulong str_capacity(const str_t *str) {
 	return (ulong)-1;
 }
 
-// str_push
-int str_push(str_t *str, char c) {
+// str_push_back
+int str_push_back(str_t *str, char c) {
 	if (!str) return 1;
 
 	ulong old_capacity = str->capacity;
@@ -148,6 +179,36 @@ int str_push(str_t *str, char c) {
 
 	str->data[old_len] = c;
 	str->data[new_len] = '\0';
+
+	str->capacity = new_capacity;
+	str->len = new_len;
+
+	return 0;
+}
+
+int str_push_front(str_t *str, char c) {
+	if (!str) return 1;
+
+	ulong old_capacity = str->capacity;
+	ulong old_len = str->len;
+	ulong new_capacity = old_capacity;
+	ulong new_len = old_len + 1;
+
+	while (new_len + 1 > new_capacity) {
+		new_capacity *= 2;
+	}
+
+	if (new_capacity != old_capacity) {
+		char *tmp = realloc(str->data, new_capacity);
+		if (!tmp) return 1;
+		str->data = tmp;
+	}
+
+	for (ulong i = new_len; i > 0; i--) {
+		str->data[i] = str->data[i - 1];
+	}
+
+	str->data[0] = c;
 
 	str->capacity = new_capacity;
 	str->len = new_len;

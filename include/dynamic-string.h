@@ -60,6 +60,10 @@ void str_destroy(str_t **str);
  * Returns a pointer to the data or NULL on failure. */
 const char *str_append(str_t *str, const char *src);
 
+/* Prepends 'src' at the beginning of 'str'.
+ * Returns a pointer to the data or NULL on failure. */
+const char *str_prepend(str_t *str, const char *src);
+
 /* Returns a pointer to the data stored in 'str' or NULL on failure.
  * This is a reference and not a copy, changes made to 
  * 'str' will be reflected through this. */
@@ -75,7 +79,12 @@ ulong str_capacity(const str_t *str);
 
 /* Appends 'c' at the end of 'str'.
  * Returns '0' on success and '1' on failure. */
-int str_push(str_t *str, char c);
+int str_push_back(str_t *str, char c);
+
+/* Prepends 'c' at the front of 'str'.
+ * Note: can be quite slow, use sparingly and avoid using in a loop.
+ * Returns '0' on success and '1' on failure. */
+int str_push_front(str_t *str, char c);
 
 /* Removes and returns the last character of 'str'.
  * Exits the program with status code '1' on failure. */

@@ -59,7 +59,6 @@ int test_data() {
 	if (strcmp(str_data(str), expected_content) != 0)
 		return 2;
 	return 0;
-	
 }
 
 int test_len() {
@@ -99,23 +98,44 @@ int test_expand_with_append() {
 	return 0;
 }
 
-int test_push() {
+int test_push_back() {
 	str_auto str = str_create();
 	if (!str) return 1;
 	if (str_append(str, "Hello, World") == NULL) return 1;
-	if (str_push(str, '!') == 1) return 2;
+	if (str_push_back(str, '!') == 1) return 2;
 	if (strcmp(str_data(str), "Hello, World!") != 0) return 3;
 	return 0;
 }
 
-int test_expand_with_push() {
+int test_expand_with_push_back() {
 	str_auto str = str_create();
 	if (!str) return 1;
 	ulong expected_capacity = str_capacity(str);
 	while (str_capacity(str) < 10000000) {
-		str_push(str, 'c');
+		if (str_push_back(str, 'c')) return 2;
 		if (str_len(str) + 1 > expected_capacity) expected_capacity *= 2;
-		if (str_capacity(str) != expected_capacity) return 1;
+		if (str_capacity(str) != expected_capacity) return 3;
+	}
+	return 0;
+}
+
+int test_push_front() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	if (str_append(str, "ello, World!") == NULL) return 1;
+	if (str_push_front(str, 'H') == 1) return 2;
+	if (strcmp(str_data(str), "Hello, World!") != 0) return 3;
+	return 0;
+}
+
+int test_expand_with_push_front() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	ulong expected_capacity = str_capacity(str);
+	while (str_capacity(str) < 10000) {
+		if (str_push_front(str, 'c')) return 2;
+		if (str_len(str) + 1 > expected_capacity) expected_capacity *= 2;
+		if (str_capacity(str) != expected_capacity) return 3;
 	}
 	return 0;
 }
@@ -123,7 +143,7 @@ int test_expand_with_push() {
 int test_pop() {
 	str_auto str = str_create();
 	if (!str) return 1;
-	if (str_push(str, 'c')) return 2;
+	if (str_push_back(str, 'c')) return 2;
 	if (str_pop(str) != 'c') return 3;
 	return 0;
 }
@@ -213,8 +233,10 @@ int main(void) {
 	ASSERT(test_len() == 0);
 	ASSERT(test_capacity() == 0);
 	ASSERT(test_expand_with_append() == 0);
-	ASSERT(test_push() == 0);
-	ASSERT(test_expand_with_push() == 0);
+	ASSERT(test_push_back() == 0);
+	ASSERT(test_push_front() == 0);
+	ASSERT(test_expand_with_push_back() == 0);
+	ASSERT(test_expand_with_push_front() == 0);
 	ASSERT(test_str_cmp() == 0);
 	ASSERT(test_replace() == 0);
 	ASSERT(test_expand_with_replace() == 0);
