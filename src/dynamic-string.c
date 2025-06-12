@@ -108,14 +108,14 @@ const char *str_prepend(str_t *str, const char *src) {
 		str->data = tmp;
 	}
 
-	for (ulong i = new_len; i > 0; i -= strlen(src)) {
-		strcpy(&str->data[i - strlen(src)], &str->data[i]);
-	}
+	memmove(&str->data[strlen(src)], str->data, old_len + 1);
 
-	if (!strcpy(&str->data[old_len], src)) return NULL;
+	memcpy(&str->data[0], src, strlen(src));
 
 	str->capacity = new_capacity;
 	str->len = new_len;
+
+	printf("%s\n", str->data);
 
 	return str->data;
 }
@@ -204,9 +204,7 @@ int str_push_front(str_t *str, char c) {
 		str->data = tmp;
 	}
 
-	for (ulong i = new_len; i > 0; i--) {
-		str->data[i] = str->data[i - 1];
-	}
+	memmove(&str->data[1], str->data, str->len + 1);
 
 	str->data[0] = c;
 

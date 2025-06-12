@@ -82,7 +82,6 @@ ulong str_capacity(const str_t *str);
 int str_push_back(str_t *str, char c);
 
 /* Prepends 'c' at the front of 'str'.
- * Note: can be quite slow, use sparingly and avoid using in a loop.
  * Returns '0' on success and '1' on failure. */
 int str_push_front(str_t *str, char c);
 

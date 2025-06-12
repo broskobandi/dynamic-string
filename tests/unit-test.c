@@ -51,6 +51,19 @@ int test_append() {
 	return 0;
 }
 
+int test_prepend() {
+	str_auto str = str_create();
+	if (!str) return 1;
+	const char *expected_content = "Hello, World!";
+	if (strcmp(str_append(str, expected_content), expected_content) != 0)
+		return 1;
+	const char *new_content = "This is a kickass library. ";
+	expected_content = "This is a kickass library. Hello, World!";
+	if (strcmp(str_prepend(str, new_content), expected_content) != 0)
+		return 2;
+	return 0;
+}
+
 int test_data() {
 	str_auto str = str_create();
 	if (!str) return 1;
@@ -132,7 +145,7 @@ int test_expand_with_push_front() {
 	str_auto str = str_create();
 	if (!str) return 1;
 	ulong expected_capacity = str_capacity(str);
-	while (str_capacity(str) < 10000) {
+	while (str_capacity(str) < 100000) {
 		if (str_push_front(str, 'c')) return 2;
 		if (str_len(str) + 1 > expected_capacity) expected_capacity *= 2;
 		if (str_capacity(str) != expected_capacity) return 3;
@@ -229,6 +242,7 @@ int test_str_has() {
 int main(void) {
 	ASSERT(test_new() == 0);
 	ASSERT(test_append() == 0);
+	ASSERT(test_prepend() == 0);
 	ASSERT(test_data() == 0);
 	ASSERT(test_len() == 0);
 	ASSERT(test_capacity() == 0);
